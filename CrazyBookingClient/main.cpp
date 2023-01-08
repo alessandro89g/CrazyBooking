@@ -12,9 +12,6 @@
 #include "../common_definitions.h"
 #include "timer.h"
 
-const char* FREE_LIST_PLACES_REQUEST = "FPLR";
-const char* BOOK_REQUEST = "BOOK";
-
 using namespace std;
 
 char *chooseRandomPlace(char *freePlaceList) {
@@ -51,10 +48,12 @@ int main(int argc, char *argv[])
 
     //Creating a socket
     int sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (sock==-1) return 1;
+    if (sock==-1){
+        cout << "Cannot create the socket... Aborting.\n";
+        return 1;
+    }
 
 //    Create a hint structure
-//    We need to know the port number
     string ipAddress = "127.0.0.1";
 
     sockaddr_in hint;
@@ -63,8 +62,19 @@ int main(int argc, char *argv[])
     inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
 
 //    Connect to the server on the socket
-    int connectRes = connect(sock, (sockaddr*)&hint, sizeof(hint));
-    if (connectRes==-1) return 1;
+    int connectRes = -1;
+    for(int i=0; i<10 && connectRes==-1; ++i) {
+        connectRes =  connect(sock, (sockaddr*)&hint, sizeof(hint));
+        if (connectRes==-1) {
+            perror("Could not connect to the server");
+            if (i==9) {
+                cout << "ABORTING\n";
+                exit(EXIT_FAILURE);
+            }
+            cout << "Trying to reconnect in 5 seconds...\n\n";
+            this_thread::sleep_for(chrono::milliseconds(5000));
+        }
+    }
 
     char buff[SIZE];
     string userInput;

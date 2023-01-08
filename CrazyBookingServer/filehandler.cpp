@@ -20,6 +20,7 @@ bool FileHandler::fileExists()
         return false;
     }
     else {
+        syslog(LOG_NOTICE, "File exists already");
         fclose(file);
         return true;
     }

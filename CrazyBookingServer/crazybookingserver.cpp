@@ -18,16 +18,15 @@ CrazyBookingServer::CrazyBookingServer(const char *databaseFileName)
     //create a master socket
     if( (master_socket = socket(AF_INET , SOCK_STREAM , 0)) == 0)
     {
-        perror("socket failed");
+        perror("Socket failure");
         exit(EXIT_FAILURE);
     }
 
-    //set master socket to allow multiple connections ,
-    //this is just a good habit, it will work without this
+    //set master socket to allow multiple connections , not necessary
     if( setsockopt(master_socket, SOL_SOCKET, SO_REUSEADDR, (char *)&opt,
         sizeof(opt)) < 0 )
     {
-        perror("setsockopt");
+        perror("setsockopt error");
         exit(EXIT_FAILURE);
     }
 
@@ -36,10 +35,10 @@ CrazyBookingServer::CrazyBookingServer(const char *databaseFileName)
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons( PORT );
 
-    //bind the socket to localhost port 8888
+    //bind the socket to localhost port 8080
     if (bind(master_socket, (struct sockaddr *)&address, sizeof(address))<0)
     {
-        perror("bind failed");
+        perror("Could not bind");
         exit(EXIT_FAILURE);
     }
     printf("Listener on port %d \n", PORT);
@@ -51,9 +50,7 @@ CrazyBookingServer::CrazyBookingServer(const char *databaseFileName)
         exit(EXIT_FAILURE);
     }
 
-    //accept the incoming connection
-    addrlen = sizeof(address);
-    puts("Waiting for connections ...");
+
 
 }
 
@@ -71,6 +68,10 @@ void CrazyBookingServer::run()
     int activity;
     int new_socket;
     int valread;
+    int addrlen;
+
+    addrlen = sizeof(address);
+    puts("Waiting for connections ...");
 
     while(TRUE)
     {
@@ -102,7 +103,7 @@ void CrazyBookingServer::run()
 
         if ((activity < 0) && (errno!=EINTR))
         {
-            printf("select error");
+            printf("Error in select");
         }
 
         //If something happened on the master socket ,
@@ -121,6 +122,7 @@ void CrazyBookingServer::run()
                 (address.sin_port));
 
             //send new connection greeting message
+            const char *welcomeMessage = "Hi! You are connected to the service CrazyBooking \r\n";
             if( send(new_socket, welcomeMessage, strlen(welcomeMessage), 0) != strlen(welcomeMessage) )
             {
                 perror("send");

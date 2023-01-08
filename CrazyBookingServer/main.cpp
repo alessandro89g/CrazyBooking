@@ -1,6 +1,3 @@
-//Example code: A simple server side code, which echos back the received message.
-//Handle multiple socket connections with select and fd_set on Linux
-
 #include <filesystem>
 #include "crazybookingserver.h"
 
@@ -15,16 +12,15 @@
 #include <string.h>
 
 
+// Exits on SIGUSR1
 void s_handler (int signum)
 {
-
-    if (signum == SIGUSR1 || signum == SIGINT) {
-        syslog (LOG_NOTICE, "daemon_crazybookingserver stopped by %s.",sys_siglist[signum]);
-        closelog();
-        exit(1);
-    }
+    syslog (LOG_NOTICE, "daemon_crazybookingserver stopped by SIGUSR1.");
+    closelog();
+    exit(EXIT_SUCCESS);
 }
 
+//Daemonization function
 static void daemonize()
 {
     pid_t pid;
@@ -41,8 +37,8 @@ static void daemonize()
 
     signal(SIGCHLD, SIG_IGN);
     signal(SIGHUP, SIG_IGN);
+    signal(SIGINT, SIG_IGN);
     signal(SIGUSR1, s_handler);
-    signal(SIGINT, s_handler);
 
     pid = fork();
     if (pid < 0)
@@ -76,18 +72,13 @@ int main(int argn, char** argv)
     }
     const char * fname = filename.c_str();
 
-    cout << fname << endl;
-
-
     daemonize();
 
     syslog (LOG_NOTICE, "daemon_crazybookingserver started.");
 
     CrazyBookingServer *server;
-
     syslog (LOG_NOTICE, "daemon_crazybookingserver file set to: %s", fname);
     server = new CrazyBookingServer(fname);
-
 
     server->run();
 

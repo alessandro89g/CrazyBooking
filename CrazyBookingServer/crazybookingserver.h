@@ -1,3 +1,5 @@
+//Multiple socket connections handled with select and fd_set on Linux
+
 #ifndef CRAZYBOOKINGSERVER_H
 #define CRAZYBOOKINGSERVER_H
 
@@ -20,7 +22,6 @@
 
 #define TRUE 1
 #define FALSE 0
-#define PORT 8080
 
 #define MAX_CLIENTS 250
 
@@ -33,16 +34,12 @@ public:
 
 private:
     BookingHandler bookingHandler;
-    const char *welcomeMessage = "Hi! You are connected to the service CrazyBooking \r\n";
-    char buffer[1025]; //data buffer of 1K
     fd_set readfds; //Set of socket descriptors
     int master_socket;
     int client_socket[MAX_CLIENTS];
     struct sockaddr_in address;
-    int addrlen;
 
-    const char* FREE_LIST_PLACES_REQUEST = "FPLR";
-    const char* BOOK_REQUEST = "BOOK";
+    char buffer[SIZE];
 };
 
 #endif // CRAZYBOOKINGSERVER_H
