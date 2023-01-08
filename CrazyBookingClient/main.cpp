@@ -12,6 +12,9 @@
 #include "../common_definitions.h"
 #include "timer.h"
 
+const char* FREE_LIST_PLACES_REQUEST = "FPLR";
+const char* BOOK_REQUEST = "BOOK";
+
 using namespace std;
 
 char *chooseRandomPlace(char *freePlaceList) {
@@ -125,7 +128,7 @@ int main(int argc, char *argv[])
         bytesReceived = recv(sock, buff, SIZE, 0);
 
 //        Display response
-        cout << "SERVER> " << string(buff,bytesReceived) << "\r\n";
+        cout << "SERVER> " << buff<< "\r\n";
         free(place);
     } while (true);
 
