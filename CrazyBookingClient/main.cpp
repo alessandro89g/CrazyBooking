@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
         bytesReceived = recv(sock, buff, SIZE, 0);
 
 //        Display response
-        cout << "SERVER> " << string(buff,bytesReceived) << "\r\n";
+        cout << "SERVER> " << buff << "\r\n";
         if (buff[0]<'1' || buff[0]>'9') {
             if (buff[0]=='0') {
                 cout << "There are no free places left!\r\n";
