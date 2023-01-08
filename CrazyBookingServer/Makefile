@@ -3,7 +3,7 @@
 CC = g++-10
 CFLAGS = -pthread -g -Wall -O3  -std=gnu++1z
 
-all: main.cpp bookinghandler.cpp filehandler.cpp bookinghandler.h filehandler.h
+all: main.cpp bookinghandler.cpp filehandler.cpp bookinghandler.h filehandler.h crazybookingserver.h crazybookingserver.cpp
 	$(CC) $(CFLAGS) $^ -o crazybooking-server
 	
 clean:
