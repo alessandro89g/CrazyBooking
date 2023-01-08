@@ -8,6 +8,7 @@ using namespace std;
 BookingHandler::BookingHandler(const char *fileName) :
     file(fileName)
 {
+    syslog(LOG_NOTICE, "Initializing BookingHandler...");
 
     if (file.fileExists()) {
         //read file
