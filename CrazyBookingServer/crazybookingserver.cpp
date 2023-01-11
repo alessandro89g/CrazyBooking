@@ -43,8 +43,8 @@ CrazyBookingServer::CrazyBookingServer(const char *databaseFileName)
     }
     printf("Listener on port %d \n", PORT);
 
-    //try to specify maximum of 3 pending connections for the master socket
-    if (listen(master_socket, 3) < 0)
+    //try to specify maximum of 250 pending connections for the master socket
+    if (listen(master_socket, MAX_CLIENTS) < 0)
     {
         perror("listen");
         exit(EXIT_FAILURE);
