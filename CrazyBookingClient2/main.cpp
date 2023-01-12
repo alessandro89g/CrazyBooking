@@ -19,7 +19,6 @@
 using namespace std;
 using namespace chrono;
 static unsigned int idCount = 0;
-static int sock;
 Network net(PORT);
 
 typedef struct Request {

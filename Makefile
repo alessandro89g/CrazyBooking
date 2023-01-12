@@ -1,4 +1,4 @@
-SUBDIRS := $(wildcard CrazyBookingServer CrazyBookingClient)
+SUBDIRS := $(wildcard CrazyBookingServer CrazyBookingClient CrazyBookingClient2)
 
 all: $(SUBDIRS)
 $(SUBDIRS):
