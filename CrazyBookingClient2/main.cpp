@@ -60,7 +60,8 @@ void requestMaker() {
                             break;
                         }
                         else {
-                            cout << "REQUEST > Something went wrong...";
+                            cout << "REQUEST > Something went wrong..." << endl;
+                            cout << "REQUEST > ERROR > " << buff <<endl;
                             break;
                         }
                     }
@@ -68,7 +69,7 @@ void requestMaker() {
                     requests[i].msToWait = rand()%41+10;
                     requests[i].id = ++idCount;
                     reqSize++;
-                    cout << "REQUEST > Added requesrt id " << idCount << " with waiting time " << requests[i].msToWait << " ms" << endl;
+                    cout << "REQUEST > Added request id " << idCount << " with waiting time " << requests[i].msToWait << " ms" << endl;
                 }
             }
         }
@@ -90,7 +91,7 @@ char *chooseRandomPlace(char *freePlaceList, int numberFreePlaces) {
     }
 
     int i = 0;
-    while(freePlaceList[pos]!=',')
+    while(freePlaceList[pos]!=',' && freePlaceList[pos]!=0)
         placeName[i++] = freePlaceList[pos++];
 
     return placeName;
@@ -117,8 +118,8 @@ bool elaborateRequest(Request & r, char *&place) {
 void requestProcesser() {
     while (!fullyBooked) {
         this_thread::sleep_for(microseconds(1000));
-        std::lock_guard<std::mutex> guard(mutex_req);
         for (int i=0; i<250; ++i) {
+            std::lock_guard<std::mutex> guard(mutex_req);
             if (requests[i].msToWait > -1){
                 requests[i].msToWait--;
                 requests[i].msWaited++;
@@ -129,9 +130,10 @@ void requestProcesser() {
                         cout << "BOOKING: " << "Request with ID  "<<requests[i].id
                              << " booked succefully place " << place << " after " << requests[i].msWaited  << " ms" << endl;
                     else
-                        cout << "BOOKING: " << "REQUEST with ID  "<<requests[i].id
+                        cout << "BOOKING: " << "Request with ID  "<<requests[i].id
                              << " booked unsuccessfully :(" << endl;
-                    free(place);
+                    if (place)
+                        free(place);
                     reqSize--;
                     requests[i].msToWait--;
                 }

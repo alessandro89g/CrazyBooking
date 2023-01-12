@@ -1,7 +1,7 @@
 .PHONY = all clean
 
 CC = g++-10
-CFLAGS = -g -Wall -O3  -std=gnu++1z
+CFLAGS = -g -Wall  -std=gnu++1z -ggdb3
 LIBS = -pthread
 
 all: main.cpp timer.cpp timer.h network.h network.cpp 

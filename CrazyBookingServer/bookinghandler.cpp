@@ -84,7 +84,6 @@ bool BookingHandler::bookPlace(const Place &place)
 
     int index = indx(row,col);
     if (table[indx(row,col)]) {
-        cerr << "bookPlace: Place already booked!" << endl;
         return false;
     }
     table[indx(row,col)] = true;
