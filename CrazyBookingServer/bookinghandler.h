@@ -42,7 +42,7 @@ public:
 
     void printPlacesDistribution() const;
     vector<Place> getFreePlaces () const;
-    const char* getFreePlacesList () const;
+    char *getFreePlacesList() const;
     bool bookPlace(const Place &place);
     int getNumberFreePlaces() const {return freePlacesNumber;}
     bool isPlaceOccupied(const Place& place) const {

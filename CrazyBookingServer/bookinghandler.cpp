@@ -58,9 +58,9 @@ vector<Place> BookingHandler::getFreePlaces() const
     return l_free;
 }
 
-const char *BookingHandler::getFreePlacesList() const
+char *BookingHandler::getFreePlacesList() const
 {
-    char *freePlaces = new char[1024];
+    char *freePlaces = (char *) malloc(1024);
     memset(freePlaces,0,1024);
 
     sprintf(freePlaces, "%d", freePlacesNumber);

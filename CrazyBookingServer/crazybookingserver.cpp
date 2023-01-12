@@ -179,10 +179,11 @@ void CrazyBookingServer::run()
                     cout << "TRYING TO>" << command << "," << buffer << endl;
 
                     if (strcmp(command, FREE_LIST_PLACES_REQUEST)==0){
-                        const char *freePlaces = bookingHandler.getFreePlacesList();
+                        char *freePlaces = bookingHandler.getFreePlacesList();
                         cout << freePlaces << endl;
                         cout << strlen(freePlaces) << endl << endl;
                         send(sd, freePlaces, strlen(freePlaces)+1,0);
+                        free(freePlaces);
                     }
                     if (strcmp(command, BOOK_REQUEST)==0){
                         Place place;
